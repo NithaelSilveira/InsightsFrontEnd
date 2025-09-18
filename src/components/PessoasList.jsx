@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react'
 function PessoasList() {
     const [pessoas, setPessoas] = useState([])
     const [loading, setLoading] = useState(true)
+    const [filtroNome, setFiltroNome] = useState('')
+    const [filtroCliente, setFiltroCliente] = useState(false)
+    const [filtroFornecedor, setFiltroFornecedor] = useState(false)
 
     useEffect(() => {
         const buscarPessoas = async () => {
@@ -22,16 +25,76 @@ function PessoasList() {
         buscarPessoas()
     }, [])
 
+    const pessoasFiltradas = pessoas.filter(pessoa =>{
+        const nomeMatch = pessoa.nome.toLowerCase().includes(filtroNome.toLowerCase())
+        const clienteMatch = !filtroCliente || pessoa.cliente
+        const fornecedorMatch = !filtroFornecedor || pessoa.fornecedor
+
+        return nomeMatch && clienteMatch && fornecedorMatch
+    })
+
     if (loading) {
         return <div>Carregando pessoas...</div>
     }
 
     return (
         <div style={{ padding: '20px' }}>
-            <h2>Pessoas </h2>
-            
+            <h1 style={{ 
+                fontSize: '32px', 
+                fontWeight: '700', 
+                color: '#764ba2', 
+                marginBottom: '25px',
+                textAlign: 'left',
+                textShadow: '0 2px 4px rgba(118, 75, 162, 0.3)',
+                letterSpacing: '1px'
+            }}>
+                Pessoas
+            </h1>
+            <div style={{
+                marginBottom: '20px',
+                padding: '20px',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '8px',
+                border: '1px solid #e9ecef',
+            }}>
+                <div style={{ marginBottom: '15px'}}>
+                    <input
+                        type="text"
+                        placeholder="Pesquisar por nome..."
+                        value={filtroNome}
+                        onChange={(e) => setFiltroNome(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '10px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            fontSize: '16px'
+                        }}
+                    />
+                </div>
+                <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px'}}>
+                    <input
+                    type="checkbox"
+                    checked={filtroCliente}
+                    onChange={(e) => setFiltroCliente(e.target.checked)}
+                    />
+                    Clientes
+                </label>
+                
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px'}}>
+                    <input
+                        type="checkbox"
+                        checked={filtroFornecedor}
+                        onChange={(e) => setFiltroFornecedor(e.target.checked)}
+                    />
+                    Fornecedores
+                </label>
+            </div>
+            </div>
+           
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-                {pessoas.map((pessoa) => (
+                {pessoasFiltradas.map((pessoa) => (
                     <div key={pessoa.id} style={{ 
                         border: '1px solid #ddd', 
                         borderRadius: '8px', 
