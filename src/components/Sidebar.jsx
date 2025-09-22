@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/Sidebar.css'
 
-function Sidebar() {
+function Sidebar({ onMudarConteudo, conteudoAtual }) {
     const [selectedItem, setSelectedItem] = useState('')
 
     const menuItems = [
@@ -12,7 +12,7 @@ function Sidebar() {
 
     const handleMenuClick = (itemId) => {
         setSelectedItem(itemId)
-        // Por enquanto apenas marca como selecionado
+        onMudarConteudo(itemId)
         console.log(`Clicou em: ${itemId}`)
     }
 

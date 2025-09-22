@@ -7,7 +7,6 @@ function Header() {
             <div className="header-content">
                 <h1 className="header-title">Insights Dashboard</h1>
                 <nav className="header-nav">
-                    <span className="user-info">Usuário</span>
                 </nav>
             </div>
         </header>
